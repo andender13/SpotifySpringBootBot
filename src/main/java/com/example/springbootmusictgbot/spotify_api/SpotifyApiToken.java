@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpotifyApiConfig {
+public class SpotifyApiToken {
     private String accessToken;
     private String tokenType;
     private int expiresIn;

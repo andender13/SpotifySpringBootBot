@@ -1,14 +1,24 @@
 package com.example.springbootmusictgbot.database.entity;
 
-public class Artist implements BaseEntity<Integer>
-{
-    @Override
-    public void setID(Integer id) {
+import com.example.springbootmusictgbot.enums.Role;
+import jakarta.persistence.*;
+import lombok.*;
 
-    }
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "user")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false)
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @Column(name = "chat_id")
+    private Long chatId;
 
-    @Override
-    public Integer getID() {
-        return 0;
-    }
 }

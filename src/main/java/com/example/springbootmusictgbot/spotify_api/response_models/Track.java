@@ -1,5 +1,6 @@
-package com.example.springbootmusictgbot.spotify_api;
+package com.example.springbootmusictgbot.spotify_api.response_models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Track {
     @JsonProperty("album")
     private Album album;
@@ -50,5 +52,5 @@ public class Track {
     @JsonProperty("uri")
     private String uri;
     @JsonProperty("is_local")
-    private boolean isLocal
+    private boolean isLocal;
 }

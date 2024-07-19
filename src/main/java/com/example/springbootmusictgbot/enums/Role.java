@@ -1,5 +1,6 @@
-package com.example.springbootmusictgbot.database.entity;
+package com.example.springbootmusictgbot.enums;
 
 public enum Role {
-    USER, ADMIN
+    USER,
+    ADMIN
 }

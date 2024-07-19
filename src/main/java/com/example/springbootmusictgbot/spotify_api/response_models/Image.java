@@ -1,4 +1,4 @@
-package com.example.springbootmusictgbot.spotify_api;
+package com.example.springbootmusictgbot.spotify_api.response_models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
