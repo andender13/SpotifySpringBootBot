@@ -36,6 +36,8 @@ import java.util.Map;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
+    private static final String EMPTY_MESSAGE = "";
+
     private final String botToken;
     private final String botUsername;
     private final UserService userService;
@@ -81,7 +83,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             case WAITING_FOR_ARTIST_NAME:
                 Artist artist = spotifyApi.artistSearchRequest(messageText);
                 restRequestOperations.getPhotoByURL(artist.getImages().getFirst().getUrl(), artist.getName());
-                sendPhoto(artist.getName(), chatId, artist.getExternalUrls().getSpotify());
+                System.out.println(MessageUtility.getInstance().prepareArtistCaption(artist));
+                sendPhoto(artist.getName(), chatId, artist.getExternalUrls().getSpotify(), MessageUtility.getInstance().prepareArtistCaption(artist));
                 Track track = JsonUtility.getInstance().parseTracksJSON(spotifyApi.artistTopTracksRequest(artist.getId())).getFirst();
                 restRequestOperations.getMp3ByURL(track.getPreviewUrl(), artist.getName() + " - " + track.getName());
                 sendMP3(artist.getName() + " - " + track.getName(), chatId, track.getExternalUrls().getSpotify());
@@ -91,7 +94,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Track track1 = JsonUtility.getInstance().parseTrackJSON(spotifyApi.trackSearchRequest(messageText));
                 System.out.println(track1);
                 restRequestOperations.getPhotoByURL(track1.getAlbum().getImages().getFirst().getUrl(), userName);
-                sendPhoto(userName, chatId, track1.getArtists().getFirst().getExternalUrls().getSpotify());
+                sendPhoto(userName, chatId, track1.getArtists().getFirst().getExternalUrls().getSpotify(), EMPTY_MESSAGE);
                 restRequestOperations.getMp3ByURL(track1.getPreviewUrl(), track1.getArtists().getFirst().getName() + " - " + track1.getName());
                 userStates.put(chatId, BotState.START);
                 sendMP3(track1.getArtists().getFirst().getName() + " - " + track1.getName(), chatId, track1.getExternalUrls().getSpotify());
@@ -180,18 +183,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             String command = commandEntry.getKey();
             String description = commandEntry.getValue();
 
-            // Проверка на допустимые символы
             if (!command.matches("^/[a-z0-9_]+$")) {
                 System.err.println("Invalid command: " + command);
                 continue;
             }
-
-            // Проверка длины описания
             if (description.length() > 256) {
                 System.err.println("Description too long for command: " + command);
                 continue;
             }
-
             commands.add(new BotCommand(command, description));
         }
         try {
@@ -201,11 +200,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendPhoto(String title, long chatId, String URL) throws TelegramApiException {
+    public void sendPhoto(String title, long chatId, String URL, String caption) throws TelegramApiException {
         SendPhoto sendPhoto = new SendPhoto();
         String filePath = "src/main/resources/" + title + ".jpg";
         sendPhoto.setPhoto(new InputFile(new File(filePath)));
         sendPhoto.setChatId(chatId);
+        sendPhoto.setCaption(caption);
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkup("Профиль артиста в Spotify", URL);
         sendPhoto.setReplyMarkup(inlineKeyboardMarkup);
         execute(sendPhoto);
@@ -217,7 +217,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         String filePath = "src/main/resources/" + title + ".mp3";
         sendAudio.setChatId(chatId);
         sendAudio.setAudio(new InputFile(new File(filePath)));
-
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkup("Полная версия трека в Spotify", trackURL);
 
         sendAudio.setReplyMarkup(inlineKeyboardMarkup);

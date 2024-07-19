@@ -1,6 +1,7 @@
 package com.example.springbootmusictgbot.utility;
 
 import com.example.springbootmusictgbot.database.entity.User;
+import com.example.springbootmusictgbot.spotify_api.response_models.Artist;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,5 +36,22 @@ public class MessageUtility {
                     append(stringStringEntry.getValue()).append("\n\n");
         }
         return commandsString.toString();
+    }
+
+    public String prepareArtistCaption(Artist artist) {
+        StringBuilder artistCaption = new StringBuilder(artist.getName()).append("\nЖанры: ");
+        for (int i = 0; i < artist.getGenres().size(); i++) {
+            artistCaption.append(artist.getGenres().get(i));
+            if (i != artist.getGenres().size() - 1) {
+                artistCaption.append(", ");
+            }
+        }
+        artistCaption.append("\n")
+                .append("Количество подпищиков: ")
+                .append(artist.getFollowers().getAmount())
+                .append("\n");
+        artistCaption.append("Популярность в Spotify: ")
+                .append(artist.getPopularity()).append("/100");
+        return artistCaption.toString();
     }
 }

@@ -14,5 +14,5 @@ public  class Followers {
     @JsonProperty("href")
     private String href;
     @JsonProperty("total")
-    private int total;
+    private int amount;
 }
