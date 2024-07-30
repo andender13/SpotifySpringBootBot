@@ -2,7 +2,10 @@ package com.example.springbootmusictgbot.database.entity;
 
 import com.example.springbootmusictgbot.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity

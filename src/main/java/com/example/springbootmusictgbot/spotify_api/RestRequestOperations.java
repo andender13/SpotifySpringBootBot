@@ -23,6 +23,47 @@ public class RestRequestOperations {
         this.client = client;
     }
 
+//    public void getPhotoByURL(String url, String title) {
+//        OkHttpClient client = new OkHttpClient();
+//
+//        // Create a request
+//        Request request = new Request.Builder().url(url).build();
+//
+//        try (Response response = client.newCall(request).execute()) {
+//            if (response.isSuccessful()) {
+//                // Get the response body
+//                ResponseBody responseBody = response.body();
+//                if (responseBody != null) {
+//                    // Get an input stream to read data from the response body
+//                    InputStream inputStream = responseBody.byteStream();
+//
+//                    // Open a file for writing
+//                    String filePath = "src/main/resources/" + title + ".jpg";
+//                    try (OutputStream outputStream = new FileOutputStream(filePath)) {
+//                        // Read data from input stream and write it to the file
+//                        byte[] buffer = new byte[4096];
+//                        int bytesRead;
+//                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                            outputStream.write(buffer, 0, bytesRead);
+//                        }
+//                        System.out.println("Image successfully downloaded: " + filePath);
+//                    } catch (IOException e) {
+//                        System.err.println("Failed to write image file: " + e.getMessage());
+//                    } finally {
+//                        // Close the input stream
+//                        inputStream.close();
+//                    }
+//                } else {
+//                    System.out.println("Failed to get response body");
+//                }
+//            } else {
+//                System.out.println("HTTP error: " + response.code() + " - " + response.message());
+//            }
+//        } catch (IOException e) {
+//            System.err.println("Failed to make HTTP request: " + e.getMessage());
+//        }
+//    }
+
     public void getPhotoByURL(String url, String title) {
         OkHttpClient client = new OkHttpClient();
 
@@ -38,7 +79,7 @@ public class RestRequestOperations {
                     InputStream inputStream = responseBody.byteStream();
 
                     // Open a file for writing
-                    String filePath = "src/main/resources/" + title + ".jpg";
+                    String filePath =  title + ".jpg";
                     try (OutputStream outputStream = new FileOutputStream(filePath)) {
                         // Read data from input stream and write it to the file
                         byte[] buffer = new byte[4096];
@@ -73,7 +114,7 @@ public class RestRequestOperations {
                 ResponseBody responseBody = response.body();
                 if (responseBody != null) {
                     InputStream inputStream = responseBody.byteStream();
-                    saveToFile(inputStream, "src/main/resources/" + title + ".mp3");
+                    saveToFile(inputStream,  title + ".mp3");
                     System.out.println("MP3 файл успешно скачан");
                 } else {
                     System.out.println("Не удалось получить тело ответа");

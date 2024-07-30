@@ -202,7 +202,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void sendPhoto(String title, long chatId, String URL, String caption) throws TelegramApiException {
         SendPhoto sendPhoto = new SendPhoto();
-        String filePath = "src/main/resources/" + title + ".jpg";
+        String filePath = title + ".jpg";
         sendPhoto.setPhoto(new InputFile(new File(filePath)));
         sendPhoto.setChatId(chatId);
         sendPhoto.setCaption(caption);
@@ -214,11 +214,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void sendMP3(String title, long chatId, String trackURL) throws TelegramApiException {
         SendAudio sendAudio = new SendAudio();
-        String filePath = "src/main/resources/" + title + ".mp3";
+        String filePath = title + ".mp3";
         sendAudio.setChatId(chatId);
         sendAudio.setAudio(new InputFile(new File(filePath)));
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardMarkup("Полная версия трека в Spotify", trackURL);
-
         sendAudio.setReplyMarkup(inlineKeyboardMarkup);
         execute(sendAudio);
         StorageUtility.getInstance().deleteMp3File(filePath);
@@ -228,7 +227,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(title);
         button.setUrl(URL);
-
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
         keyboardButtonsRow.add(button);
 
